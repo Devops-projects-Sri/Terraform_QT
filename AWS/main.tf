@@ -2,7 +2,7 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "6.21.0"
     }
   }
@@ -15,8 +15,8 @@ provider "aws" {
 
 
 resource "aws_vpc" "terraform" {
-  cidr_block       = "10.10.0.0/16"
-  
+  cidr_block = "10.10.0.0/16"
+
   tags = {
     Name = "practice_tf"
   }
