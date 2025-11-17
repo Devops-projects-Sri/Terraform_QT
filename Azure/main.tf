@@ -16,16 +16,16 @@ provider "azurerm" {
   }
 }
 
-resource "azurerm_resource_group" "fromtf" {
-  name     = "fromtf-resource"
+resource "azurerm_resource_group" "fromtf1" {
+  name     = "fromtf1-resource"
   location = "East US"
 }
 
 resource "azurerm_storage_account" "store" {
-  name = "fromtfqt2025"
-  resource_group_name = "fromtf"
+  name = "fromtf1qt2025"
+  resource_group_name = "fromtf1"
   location = "East US"
   account_tier = "Standard"
   account_replication_type = "RAGRS"
-  depends_on = [ azurerm_resource_group.fromtf ]
+  depends_on = [ azurerm_resource_group.fromtf1 ]
 }
