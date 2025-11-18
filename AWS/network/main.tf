@@ -1,12 +1,11 @@
 # VPC
 
 resource "aws_vpc" "noptf" {
-  cidr_block = var.vpc_cidr
+  cidr_block = var.vpc_info.cidr
   tags = {
-    Name = var.vpc_name
+    Name = var.vpc_info.name
   }
 }
-
 
 # Subnets
 
@@ -14,11 +13,11 @@ resource "aws_vpc" "noptf" {
 
 resource "aws_subnet" "app1" {
   vpc_id            = aws_vpc.noptf.id
-  availability_zone = var.app1_subnet_az
-  cidr_block        = var.app1_cidr
+  availability_zone = var.app1_subnet_info.az
+  cidr_block        = var.app1_subnet_info.cidr
 
   tags = {
-    Name = var.app1_subnet_name
+    Name = var.app1_subnet_info.name
   }
 
   depends_on = [aws_vpc.noptf]
@@ -28,11 +27,11 @@ resource "aws_subnet" "app1" {
 
 resource "aws_subnet" "app2" {
   vpc_id            = aws_vpc.noptf.id
-  availability_zone = var.app2_subnet_az
-  cidr_block        = var.app2_cidr
+  availability_zone = var.app2_subnet_info.az
+  cidr_block        = var.app2_subnet_info.cidr
 
   tags = {
-    Name = var.app2_subnet_name
+    Name = var.app2_subnet_info.name
   }
 
   depends_on = [aws_vpc.noptf]
@@ -42,11 +41,11 @@ resource "aws_subnet" "app2" {
 
 resource "aws_subnet" "db1" {
   vpc_id            = aws_vpc.noptf.id
-  availability_zone = var.db1_subnet_az
-  cidr_block        = var.db1_cidr
+  availability_zone = var.db1_subnet_info.az
+  cidr_block        = var.db1_subnet_info.cidr
 
   tags = {
-    Name = var.db1_subnet_name
+    Name = var.db1_subnet_info.name
   }
 
   depends_on = [aws_vpc.noptf]
@@ -56,11 +55,11 @@ resource "aws_subnet" "db1" {
 
 resource "aws_subnet" "db2" {
   vpc_id            = aws_vpc.noptf.id
-  availability_zone = var.db2_subnet_az
-  cidr_block        = var.db2_cidr
+  availability_zone = var.db2_subnet_info.az
+  cidr_block        = var.db2_subnet_info.cidr
 
   tags = {
-    Name = var.db2_subnet_name
+    Name = var.db2_subnet_info.name
   }
 
   depends_on = [aws_vpc.noptf]
