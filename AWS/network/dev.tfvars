@@ -16,7 +16,7 @@ app1_subnet_info = {
 
 # app2 values
 
-app1_subnet_info = {
+app2_subnet_info = {
   az = "us-east-1b"
   cidr = "10.10.2.0/24"
   name = "dev-app2"
