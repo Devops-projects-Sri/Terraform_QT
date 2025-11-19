@@ -38,8 +38,7 @@ variable "network_info" {
         cidr = "10.0.2.0/24"
         az   = "us-east-1b"
       }]
-    private_subnets = [ {
-      {
+    private_subnets = [{
         name = "db1"
         cidr = "10.0.11.0/24"
         az   = "us-east-1a"
@@ -49,7 +48,7 @@ variable "network_info" {
         cidr = "10.0.12.0/24"
         az   = "us-east-1b"
       }
-    } ]
+     ]
   }
 }
 
