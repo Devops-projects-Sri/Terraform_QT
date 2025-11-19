@@ -8,10 +8,17 @@ variable "region" {
 
 variable "network_info" {
   description = "vpc and subnet info"
+  # using a nested object variable
   type = object({
     name = string
     cidr = string
-    subnets = list(object({
+  # subnet variable is a list of objects
+    private_subnets = list(object({
+      name = string
+      az   = string
+      cidr = string
+    }))
+    public_subnets = list(object({
       name = string
       az   = string
       cidr = string
@@ -21,17 +28,17 @@ variable "network_info" {
   default = {
     name = "noptf"
     cidr = "10.0.0.0/16"
-    subnets = [{
+    public_subnets = [{
       name = "app1"
       cidr = "10.0.1.0/24"
       az   = "us-east-1a"
       },
-
       {
         name = "app2"
         cidr = "10.0.2.0/24"
         az   = "us-east-1b"
-      },
+      }]
+    private_subnets = [ {
       {
         name = "db1"
         cidr = "10.0.11.0/24"
@@ -42,7 +49,7 @@ variable "network_info" {
         cidr = "10.0.12.0/24"
         az   = "us-east-1b"
       }
-    ]
+    } ]
   }
 }
 

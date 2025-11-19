@@ -9,8 +9,6 @@ resource "aws_vpc" "noptf" {
 
 # Subnets
 
-## app1 Subnet
-
 resource "aws_subnet" "subnets" {
   count             = length(var.network_info.subnets)
   cidr_block        = var.network_info.subnets[count.index].cidr
