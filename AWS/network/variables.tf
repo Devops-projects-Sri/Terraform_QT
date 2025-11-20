@@ -12,7 +12,7 @@ variable "network_info" {
   type = object({
     name = string
     cidr = string
-  # subnet variable is a list of objects
+    # subnet variable is a list of objects
     private_subnets = list(object({
       name = string
       az   = string
@@ -37,18 +37,18 @@ variable "network_info" {
         name = "app2"
         cidr = "10.0.2.0/24"
         az   = "us-east-1b"
-      }]
+    }]
     private_subnets = [{
-        name = "db1"
-        cidr = "10.0.11.0/24"
-        az   = "us-east-1a"
+      name = "db1"
+      cidr = "10.0.11.0/24"
+      az   = "us-east-1a"
       },
       {
         name = "db2"
         cidr = "10.0.12.0/24"
         az   = "us-east-1b"
       }
-     ]
+    ]
   }
 }
 

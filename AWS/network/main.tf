@@ -10,7 +10,7 @@ resource "aws_vpc" "noptf" {
 # Subnets
 
 ## Private
-  # count depends on number of defined private subnets
+# count depends on number of defined private subnets
 
 resource "aws_subnet" "private_subnets" {
   count             = length(var.network_info.private_subnets)
@@ -26,7 +26,7 @@ resource "aws_subnet" "private_subnets" {
 }
 
 ## Public
-  # count depends on number of defined public subnets
+# count depends on number of defined public subnets
 
 resource "aws_subnet" "public_subnets" {
   count             = length(var.network_info.public_subnets)
@@ -42,29 +42,28 @@ resource "aws_subnet" "public_subnets" {
 }
 
 # Internet Gateway
-  # count depends on whether the number of defined public subnets is > 0. 
-  # ig is created only when public subnets exist
+# count depends on whether the number of defined public subnets is > 0. 
+# ig is created only when public subnets exist
 
 resource "aws_internet_gateway" "ig" {
-  count  = length(var.network_info.public_subnets) > 0 ? 1 : 0
+  count  = local.has_public_subnets ? 1 : 0
   vpc_id = aws_vpc.noptf.id
   tags = {
     Name = var.network_info.name
   }
-
 }
 
 # Route table
 
 ## Public
-  # count depends on whether the number of defined public subnets is > 0
-  # rt will be created only if public subnets exist
+# count depends on whether the number of defined public subnets is > 0
+# rt will be created only if public subnets exist
 
 resource "aws_route_table" "public" {
-  count  = length(var.network_info.public_subnets) > 0 ? 1 : 0
+  count  = local.has_public_subnets ? 1 : 0
   vpc_id = aws_vpc.noptf.id
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block = local.anywhere
     gateway_id = aws_internet_gateway.ig[0].id
   }
   tags = {
@@ -74,11 +73,11 @@ resource "aws_route_table" "public" {
 }
 
 ## Private
-  # count depends on whether the number of defined private subnets is > 0
-  # rt will be created only if private subnets exist
+# count depends on whether the number of defined private subnets is > 0
+# rt will be created only if private subnets exist
 
 resource "aws_route_table" "private" {
-  count  = length(var.network_info.private_subnets) > 0 ? 1 : 0
+  count  = local.has_private_subnets ? 1 : 0
   vpc_id = aws_vpc.noptf.id
   tags = {
     Name = "private"
@@ -87,10 +86,10 @@ resource "aws_route_table" "private" {
 
 }
 
-# Route table association
+# Route table association - to associate subnet and route table
 
 ## Public
-  # count depends on whether the number of defined public subnets is > 0
+# count depends on whether the number of defined public subnets is > 0
 
 resource "aws_route_table_association" "public" {
   count          = length(var.network_info.public_subnets)
@@ -99,7 +98,7 @@ resource "aws_route_table_association" "public" {
   depends_on     = [aws_route_table.public, aws_subnet.public_subnets]
 }
 ## Private
-  # count depends on whether the number of defined private subnets is > 0
+# count depends on whether the number of defined private subnets is > 0
 
 resource "aws_route_table_association" "private" {
   count          = length(var.network_info.private_subnets)
