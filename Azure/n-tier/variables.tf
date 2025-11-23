@@ -43,3 +43,56 @@ variable "network_info" {
     ]
   }
 }
+
+variable "web_security_group" {
+  type = object({
+    name = string
+    rules = list(object({
+      name = string
+      protocol = string
+      direction = string
+      access = string
+      priority = number
+      source_port_range = string
+      destination_port_range = string
+      source_address_prefix       = string
+      destination_address_prefix  = string
+    }))
+  })
+  default = {
+    name = "websg"
+    rules = [ {
+      name = "webssh"
+      priority = 300
+      direction = "Inbound"
+      protocol = "TCP"
+      access = "allow"
+      source_port_range = "*"
+      destination_port_range = "22"
+      source_address_prefix       = "*"
+      destination_address_prefix  = "*"
+    },
+    {
+      name = "webhttp"
+      priority = 310
+      direction = "Inbound"
+      protocol = "TCP"
+      access = "allow"
+      source_port_range = "*"
+      destination_port_range = "80"
+      source_address_prefix       = "*"
+      destination_address_prefix  = "*"
+    },
+    {
+      name = "webhttps"
+      priority = 320
+      direction = "Inbound"
+      protocol = "TCP"
+      access = "allow"
+      source_port_range = "*"
+      destination_port_range = "443"
+      source_address_prefix       = "*"
+      destination_address_prefix  = "*"
+    } ]
+  }
+}
