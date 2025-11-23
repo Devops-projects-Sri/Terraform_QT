@@ -18,12 +18,14 @@ resource "azurerm_virtual_network" "ntier" {
 }
 
 resource "azurerm_subnet" "ntier" {
-    count = length(var.network_info.subnets)
-    name = var.network_info.subnets[count.index].name
-    resource_group_name = azurerm_resource_group.ntier.name
-    virtual_network_name = azurerm_virtual_network.ntier.name
-    address_prefixes = var.network_info.subnets[count.index].address_space
+  count                = length(var.network_info.subnets)
+  name                 = var.network_info.subnets[count.index].name
+  resource_group_name  = azurerm_resource_group.ntier.name
+  virtual_network_name = azurerm_virtual_network.ntier.name
+  address_prefixes     = [var.network_info.subnets[count.index].address_space]
 
-    depends_on = [ azurerm_resource_group.ntier, azurerm_virtual_network.ntier ]
+  depends_on = [azurerm_resource_group.ntier, azurerm_virtual_network.ntier]
 }
+
+
 
