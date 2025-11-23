@@ -18,4 +18,6 @@ resource "azurerm_network_security_rule" "web" {
     destination_port_range      = var.web_security_group.rules[count.index].destination_port_range
     source_address_prefix       = var.web_security_group.rules[count.index].source_address_prefix
     destination_address_prefix  = var.web_security_group.rules[count.index].destination_address_prefix
+
+    depends_on = [ azurerm_network_security_group.web, azurerm_resource_group.ntier ]
 }
