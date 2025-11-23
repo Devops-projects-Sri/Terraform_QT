@@ -13,7 +13,7 @@ variable "resource_group" {
 
 }
 
-# define network info
+# define network info - 
 
 variable "network_info" {
   type = object({
@@ -47,8 +47,7 @@ variable "network_info" {
 variable "web_security_group" {
   type = object({
     name = string
-    rules = list(object({
-      name                       = string
+    rules = map(object({
       protocol                   = string
       direction                  = string
       access                     = string
@@ -61,38 +60,39 @@ variable "web_security_group" {
   })
   default = {
     name = "websg"
-    rules = [{
-      name                       = "webssh"
-      priority                   = 300
-      direction                  = "Inbound"
-      protocol                   = "Tcp"
-      access                     = "Allow"
-      source_port_range          = "*"
-      destination_port_range     = "22"
-      source_address_prefix      = "*"
-      destination_address_prefix = "*"
+    rules = {
+        websssh = {
+                priority                   = 300
+                direction                  = "Inbound"
+                protocol                   = "Tcp"
+                access                     = "Allow"
+                source_port_range          = "*"
+                destination_port_range     = "22"
+                source_address_prefix      = "*"
+                destination_address_prefix = "*"
+        }
+
+        "webhttp" = {
+        
+                priority                   = 310
+                direction                  = "Inbound"
+                protocol                   = "Tcp"
+                access                     = "Allow"
+                source_port_range          = "*"
+                destination_port_range     = "80"
+                source_address_prefix      = "*"
+                destination_address_prefix = "*"
       },
-      {
-        name                       = "webhttp"
-        priority                   = 310
-        direction                  = "Inbound"
-        protocol                   = "Tcp"
-        access                     = "Allow"
-        source_port_range          = "*"
-        destination_port_range     = "80"
-        source_address_prefix      = "*"
-        destination_address_prefix = "*"
-      },
-      {
-        name                       = "webhttps"
-        priority                   = 320
-        direction                  = "Inbound"
-        protocol                   = "Tcp"
-        access                     = "Allow"
-        source_port_range          = "*"
-        destination_port_range     = "443"
-        source_address_prefix      = "*"
-        destination_address_prefix = "*"
-    }]
+        "webhttps" = {
+                priority                   = 320
+                direction                  = "Inbound"
+                protocol                   = "Tcp"
+                access                     = "Allow"
+                source_port_range          = "*"
+                destination_port_range     = "443"
+                source_address_prefix      = "*"
+                destination_address_prefix = "*"
+    }
   }
+}
 }
