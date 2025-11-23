@@ -1,13 +1,13 @@
 # defining security group for web
 
 resource "azurerm_network_security_group" "web" {
-# associating with rg
+  # associating with rg
   resource_group_name = azurerm_resource_group.ntier.name
 
-  name                = var.web_security_group.name
-  location            = azurerm_resource_group.ntier.location
-#explicit dependency
-  depends_on = [ azurerm_resource_group.ntier ]
+  name     = var.web_security_group.name
+  location = azurerm_resource_group.ntier.location
+  #explicit dependency
+  depends_on = [azurerm_resource_group.ntier]
 
 }
 
@@ -15,22 +15,22 @@ resource "azurerm_network_security_group" "web" {
 
 resource "azurerm_network_security_rule" "web" {
 
-# this part is used for association with nsg and rg - implicit dependency
+  # this part is used for association with nsg and rg - implicit dependency
   network_security_group_name = azurerm_network_security_group.web.name
   resource_group_name         = azurerm_resource_group.ntier.name
 
-# defining nsrule using for_each
+  # defining nsrule using for_each
   for_each = var.web_security_group.rules
-   
-  name                        = each.key
-  protocol                    = each.value.protocol
-  direction                   = each.value.direction
-  priority                    = each.value.priority
-  access                      = each.value.access
-  source_port_range           = each.value.source_port_range
-  destination_port_range      = each.value.destination_port_range
-  source_address_prefix       = each.value.source_address_prefix
-  destination_address_prefix  = each.value.destination_address_prefix
-#explicit dependency
+
+  name                       = each.key
+  protocol                   = each.value.protocol
+  direction                  = each.value.direction
+  priority                   = each.value.priority
+  access                     = each.value.access
+  source_port_range          = each.value.source_port_range
+  destination_port_range     = each.value.destination_port_range
+  source_address_prefix      = each.value.source_address_prefix
+  destination_address_prefix = each.value.destination_address_prefix
+  #explicit dependency
   depends_on = [azurerm_network_security_group.web, azurerm_resource_group.ntier]
 }

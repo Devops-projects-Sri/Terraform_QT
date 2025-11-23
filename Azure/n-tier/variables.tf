@@ -61,38 +61,38 @@ variable "web_security_group" {
   default = {
     name = "websg"
     rules = {
-        websssh = {
-                priority                   = 300
-                direction                  = "Inbound"
-                protocol                   = "Tcp"
-                access                     = "Allow"
-                source_port_range          = "*"
-                destination_port_range     = "22"
-                source_address_prefix      = "*"
-                destination_address_prefix = "*"
-        }
+      "websssh" = {
+        priority                   = 300
+        direction                  = "Inbound"
+        protocol                   = "Tcp"
+        access                     = "Allow"
+        source_port_range          = "*"
+        destination_port_range     = "22"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+      }
 
-        "webhttp" = {
-        
-                priority                   = 310
-                direction                  = "Inbound"
-                protocol                   = "Tcp"
-                access                     = "Allow"
-                source_port_range          = "*"
-                destination_port_range     = "80"
-                source_address_prefix      = "*"
-                destination_address_prefix = "*"
+      "webhttp" = {
+
+        priority                   = 310
+        direction                  = "Inbound"
+        protocol                   = "Tcp"
+        access                     = "Allow"
+        source_port_range          = "*"
+        destination_port_range     = "80"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
       },
-        "webhttps" = {
-                priority                   = 320
-                direction                  = "Inbound"
-                protocol                   = "Tcp"
-                access                     = "Allow"
-                source_port_range          = "*"
-                destination_port_range     = "443"
-                source_address_prefix      = "*"
-                destination_address_prefix = "*"
+      "webhttps" = {
+        priority                   = 320
+        direction                  = "Inbound"
+        protocol                   = "Tcp"
+        access                     = "Allow"
+        source_port_range          = "*"
+        destination_port_range     = "443"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+      }
     }
   }
-}
 }
