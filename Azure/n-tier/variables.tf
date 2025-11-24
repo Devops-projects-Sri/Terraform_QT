@@ -96,3 +96,16 @@ variable "web_security_group" {
     }
   }
 }
+
+
+variable "webserver" {
+  type = object({
+    name = string
+  })
+
+  default = {
+    name = "web1"
+  }
+  
+}
+
