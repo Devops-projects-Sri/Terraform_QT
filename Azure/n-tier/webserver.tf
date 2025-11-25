@@ -1,5 +1,4 @@
-#webserver public ip
-
+# webserver public ip
 resource "azurerm_public_ip" "web" {
 
   resource_group_name = azurerm_resource_group.ntier.name #resource group association
@@ -11,7 +10,6 @@ resource "azurerm_public_ip" "web" {
 }
 
 # webserver network interface
-
 resource "azurerm_network_interface" "web" {
 
   location            = azurerm_resource_group.ntier.location
@@ -27,6 +25,7 @@ resource "azurerm_network_interface" "web" {
 
 }
 
+# creating a nic-sg association
 resource "azurerm_network_interface_security_group_association" "web" {
   network_security_group_id = azurerm_network_security_group.web.id
   network_interface_id      = azurerm_network_interface.web.id
@@ -41,3 +40,30 @@ data "azurerm_subnet" "web" {
   virtual_network_name = azurerm_virtual_network.ntier.name
   depends_on           = [azurerm_subnet.ntier]
 }
+
+# creating a web vm
+
+resource "azurerm_linux_virtual_machine" "web" {
+  
+  name = var.webserver.name
+  resource_group_name = azurerm_resource_group.ntier.name
+  location = azurerm_resource_group.ntier.location
+  network_interface_ids = [ azurerm_network_interface.web.id ]
+  admin_username = var.webserver.admin_username
+  size = var.webserver.size
+  disable_password_authentication = "false"
+  admin_password = var.webserver.admin_password
+    os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = var.webserver.publisher
+    offer     = var.webserver.offer
+    sku       = var.webserver.sku
+    version   = var.webserver.latest
+  }
+}
+
+
