@@ -101,27 +101,27 @@ variable "web_security_group" {
 
 variable "webserver" {
   type = object({
-    name        = string
-    subnet_name = string
+    name           = string
+    subnet_name    = string
     admin_username = optional(string, "devopsadmin")
     admin_password = optional(string, "qtdevops@123")
-    publisher=string
-    offer=string
-    sku=string
-    size=optional(string, "Standard B1s")
-    version=string
+    publisher      = string
+    offer          = string
+    sku            = string
+    size           = optional(string, "Standard B1s")
+    version        = string
   })
 
   default = {
-    name        = "web1"
-    subnet_name = "web"
+    name           = "web1"
+    subnet_name    = "web"
     publisher      = "Canonical"
     offer          = "0001-com-ubuntu-server-jammy"
     sku            = "22_04-lts"
     version        = "latest"
     admin_username = "devopsadmin"
     admin_password = "qtdevops@123"
-    size = "Standard B1s"
+    size           = "Standard B1s"
   }
 
 }

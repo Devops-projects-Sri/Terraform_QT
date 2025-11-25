@@ -44,16 +44,16 @@ data "azurerm_subnet" "web" {
 # creating a web vm
 
 resource "azurerm_linux_virtual_machine" "web" {
-  
-  name = var.webserver.name
-  resource_group_name = azurerm_resource_group.ntier.name
-  location = azurerm_resource_group.ntier.location
-  network_interface_ids = [ azurerm_network_interface.web.id ]
-  admin_username = var.webserver.admin_username
-  size = var.webserver.size
+
+  name                            = var.webserver.name
+  resource_group_name             = azurerm_resource_group.ntier.name
+  location                        = azurerm_resource_group.ntier.location
+  network_interface_ids           = [azurerm_network_interface.web.id]
+  admin_username                  = var.webserver.admin_username
+  size                            = var.webserver.size
   disable_password_authentication = "false"
-  admin_password = var.webserver.admin_password
-    os_disk {
+  admin_password                  = var.webserver.admin_password
+  os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
@@ -62,8 +62,9 @@ resource "azurerm_linux_virtual_machine" "web" {
     publisher = var.webserver.publisher
     offer     = var.webserver.offer
     sku       = var.webserver.sku
-    version   = var.webserver.latest
+    version   = var.webserver.version
   }
+  user_data = filebase64("nginx.sh")
 }
 
 
