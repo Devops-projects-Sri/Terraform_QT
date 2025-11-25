@@ -75,7 +75,7 @@ resource "azurerm_linux_virtual_machine" "web" {
   }
 
   provisioner "remote-exec" {
-    inline = ["apt update", "apt install nginx openjdk-17-jdk -y"]
+    inline = ["sudo apt update", "sudo apt install nginx openjdk-17-jdk -y"]
   }
 
 }
