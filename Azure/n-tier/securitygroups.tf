@@ -2,9 +2,9 @@
 
 resource "azurerm_network_security_group" "web" {
   resource_group_name = azurerm_resource_group.ntier.name #associating with rg
-  name     = var.web_security_group.name
-  location = azurerm_resource_group.ntier.location
-  depends_on = [azurerm_resource_group.ntier] #explicit dependency
+  name                = var.web_security_group.name
+  location            = azurerm_resource_group.ntier.location
+  depends_on          = [azurerm_resource_group.ntier] #explicit dependency
 
 }
 
