@@ -29,14 +29,14 @@ resource "azurerm_network_interface" "web" {
 
 resource "azurerm_network_interface_security_group_association" "web" {
   network_security_group_id = azurerm_network_security_group.web.id
-  network_interface_id = azurerm_network_interface.web.id
-  depends_on = [ azurerm_network_interface.web, azurerm_network_security_group.web ]
+  network_interface_id      = azurerm_network_interface.web.id
+  depends_on                = [azurerm_network_interface.web, azurerm_network_security_group.web]
 }
 
 
 # using data source to fetch subnet id of web subnet
 data "azurerm_subnet" "web" {
-  name                 = var.webserver.subnet_name        #using name to filter
+  name                 = var.webserver.subnet_name         #using name to filter
   resource_group_name  = azurerm_resource_group.ntier.name #resource group association
   virtual_network_name = azurerm_virtual_network.ntier.name
   depends_on           = [azurerm_subnet.ntier]
