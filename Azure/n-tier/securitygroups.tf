@@ -1,13 +1,10 @@
 # defining security group for web
 
 resource "azurerm_network_security_group" "web" {
-  # associating with rg
-  resource_group_name = azurerm_resource_group.ntier.name
-
+  resource_group_name = azurerm_resource_group.ntier.name #associating with rg
   name     = var.web_security_group.name
   location = azurerm_resource_group.ntier.location
-  #explicit dependency
-  depends_on = [azurerm_resource_group.ntier]
+  depends_on = [azurerm_resource_group.ntier] #explicit dependency
 
 }
 

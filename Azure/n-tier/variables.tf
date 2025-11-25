@@ -61,6 +61,7 @@ variable "web_security_group" {
   default = {
     name = "websg"
     rules = {
+
       "websssh" = {
         priority                   = 300
         direction                  = "Inbound"
@@ -101,10 +102,12 @@ variable "web_security_group" {
 variable "webserver" {
   type = object({
     name = string
+    subnet_name = string
   })
 
   default = {
     name = "web1"
+    subnet_name = "web"
   }
   
 }
