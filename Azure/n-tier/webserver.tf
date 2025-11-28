@@ -11,8 +11,8 @@ resource "azurerm_public_ip" "web" {
 
 # using data source to fetch subnet id of web subnet
 data "azurerm_subnet" "web" {
-  name                 = var.webserver.subnet_name         #using name to filter
-  resource_group_name  = azurerm_resource_group.ntier.name 
+  name                 = var.webserver.subnet_name #using name to filter
+  resource_group_name  = azurerm_resource_group.ntier.name
   virtual_network_name = azurerm_virtual_network.ntier.name
   depends_on           = [azurerm_subnet.ntier]
 }
@@ -21,8 +21,8 @@ data "azurerm_subnet" "web" {
 resource "azurerm_network_interface" "web" {
 
   location            = azurerm_resource_group.ntier.location
-  name                = "${var.webserver.name}-nic"       #string interpolation
-  resource_group_name = azurerm_resource_group.ntier.name 
+  name                = "${var.webserver.name}-nic" #string interpolation
+  resource_group_name = azurerm_resource_group.ntier.name
   ip_configuration {
     name                          = var.webserver.name
     private_ip_address_allocation = "Dynamic"
@@ -67,7 +67,7 @@ resource "azurerm_linux_virtual_machine" "web" {
   # load user data from local file to execute commands
   user_data = filebase64("nginx.sh")
 
-  }
+}
 
 # using null resource to copy file and execute script
 ## use build id while executing tf apply
@@ -76,7 +76,7 @@ resource "null_resource" "web" {
   triggers = {
     build_id = var.build_id
   }
-  
+
   # to establish ssh connection to web vm
   connection {
     host     = azurerm_linux_virtual_machine.web.public_ip_address # public ip from web vm
@@ -85,13 +85,13 @@ resource "null_resource" "web" {
     password = var.webserver.admin_password
   }
 
-# using file provisioner to copy index.html file from local folder to /tmp in vm
+  # using file provisioner to copy index.html file from local folder to /tmp in vm
   provisioner "file" {
-    source = "index.html"
+    source      = "index.html"
     destination = "/tmp/index.html"
   }
 
-# using remote exec to execute commands in web vm
+  # using remote exec to execute commands in web vm
   provisioner "remote-exec" {
     script = "nginx.sh"
   }
