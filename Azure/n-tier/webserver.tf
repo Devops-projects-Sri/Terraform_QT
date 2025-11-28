@@ -67,16 +67,34 @@ resource "azurerm_linux_virtual_machine" "web" {
   # load user data from local file to execute commands
   user_data = filebase64("nginx.sh")
 
-  # using remote exec to execute commands - duplicate of user data
+  }
+
+# using null resource to copy file and execute script
+## use build id while executing tf apply
+
+resource "null_resource" "web" {
+  triggers = {
+    build_id = var.build_id
+  }
+  
+  # to establish ssh connection to web vm
   connection {
-    host     = self.public_ip_address # using self to derive ip address from this resource
+    host     = azurerm_linux_virtual_machine.web.public_ip_address # public ip from web vm
     type     = "ssh"
     user     = var.webserver.admin_username
     password = var.webserver.admin_password
   }
 
+# using file provisioner to copy index.html file from local folder to /tmp in vm
+  provisioner "file" {
+    source = "index.html"
+    destination = "/tmp/index.html"
+  }
+
+# using remote exec to execute commands in web vm
   provisioner "remote-exec" {
-    inline = ["sudo apt update", "sudo apt install nginx openjdk-17-jdk -y"]
+    script = "nginx.sh"
   }
 
 }
+

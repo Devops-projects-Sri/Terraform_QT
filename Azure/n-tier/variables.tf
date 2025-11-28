@@ -132,4 +132,9 @@ variable "webserver" {
 
 }
 
+## use build id while executing tf apply
+variable "build_id" {
+  type    = string
+  default = "1"
+}
 
