@@ -13,7 +13,8 @@ variable "resource_group" {
 
 }
 
-# define network info - 
+# defining network info using nested object variable
+# list(object) used for count
 
 variable "network_info" {
   type = object({
@@ -43,6 +44,9 @@ variable "network_info" {
     ]
   }
 }
+
+# define web sg info using nested object variable
+# map(object) used for for_each. contains key value pairs
 
 variable "web_security_group" {
   type = object({
@@ -98,6 +102,8 @@ variable "web_security_group" {
   }
 }
 
+# defining webserver info
+## uses hardcoded username and password. replace and move to vault as necessary
 
 variable "webserver" {
   type = object({
