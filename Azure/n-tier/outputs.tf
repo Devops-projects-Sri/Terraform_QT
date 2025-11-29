@@ -1,4 +1,4 @@
-# provides web vm ip address for connection 
+# provides web vm ip address for verification 
 ## uses format function to substitute ip address
 
 output "web-url" {

@@ -70,7 +70,7 @@ resource "azurerm_linux_virtual_machine" "web" {
 }
 
 # using null resource to copy file and execute script
-## use build id while executing tf apply
+## iterate build id while executing tf apply using -var option
 
 resource "null_resource" "web" {
   triggers = {
