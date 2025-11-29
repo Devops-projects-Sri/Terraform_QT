@@ -1,3 +1,5 @@
+# var info for defaults
+
 variable "region" {
   type = string
   default = "us-east-1"
@@ -11,6 +13,7 @@ variable "default_tags" {
     }
 }
 
+# var info for vpc
 variable "vpc_info" {
   type = object({
     name                 = string
@@ -27,7 +30,7 @@ variable "vpc_info" {
 }
 
 
-# creating variables for private and public subnets
+# var info for public subnets
 variable "public_subnet_info" {
     type = list(object({
     name              = string
@@ -45,7 +48,7 @@ variable "public_subnet_info" {
   }]
 }
 
-
+# var info for private subnet
 variable "private_subnet_info" {
     
     type = list(object({
@@ -74,4 +77,35 @@ variable "private_subnet_info" {
       cidr = "10.113.22.0/24"
       availability_zone = "us-east-1b"
     } ]
+}
+
+# var info for web security group
+variable "web_sg" {
+  type = object({
+    name        = string
+    description = string
+    ingress_rules = list(object({
+      name        = string
+      cidr_ipv4   = string
+      description = string
+      from_port   = number
+      to_port     = number
+      ip_protocol = string
+    }))
+
+    egress_rules = list(object({
+      name        = string
+      cidr_ipv4   = string
+      description = string
+      from_port   = number
+      to_port     = number
+      ip_protocol = string
+    }))
+  })
+}
+
+
+variable "build_id" {
+  type    = string
+  default = "1"
 }
