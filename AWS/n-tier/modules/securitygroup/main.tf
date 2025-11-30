@@ -1,4 +1,4 @@
-# creating security groups for web servers
+# creating security groups for servers
 
 
 resource "aws_security_group" "sg" {
@@ -8,7 +8,6 @@ resource "aws_security_group" "sg" {
   tags = {
     Name = var.security_group.name
   }
-  depends_on = [aws_vpc.vpc]
 }
 
 # one cidr block per rule
