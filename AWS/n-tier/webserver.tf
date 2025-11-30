@@ -1,47 +1,44 @@
 # create a webserver
 
+# use existing key pair to login
+# associate public key to vms
 resource "aws_key_pair" "ntier-key" {
-  key_name = "terraform-key"
-  public_key = file("~/.ssh/id_rsa.pub")
+  key_name   = "terraform-key"
+  public_key = file("~/.ssh/id_ed25519.pub")
 }
+
+# create aws web instances
+# use number of public subnets to iterate
 
 resource "aws_instance" "web_instance" {
-    count = length(var.public_subnet_info)
-    region = var.region
-    ami = "ami-02521d90e7410d9f0"
-    instance_type               = "t2.micro"
-    key_name = aws_key_pair.ntier-key.key_name
-    vpc_security_group_ids = [ aws_security_group.web.id ]
-    subnet_id = aws_subnet.public[count.index].id
-    associate_public_ip_address = true
-    tags = {
-      name = ""
-    }
-  depends_on = [ aws_key_pair.ntier-key, aws_security_group.web, aws_subnet.public ]
-}
 
-resource "aws_instance" "web" {
   ami                         = "ami-02521d90e7410d9f0"
   instance_type               = "t2.micro"
-  key_name                    = aws_key_pair.ntier.key_name
-  vpc_security_group_ids      = [aws_security_group.web.id]
-  subnet_id                   = aws_subnet.subnets[0].id
   associate_public_ip_address = true
+  region                      = var.region
+  key_name                    = aws_key_pair.ntier-key.key_name
+
+  count                  = length(var.public_subnet_info)
+  availability_zone      = var.public_subnet_info[count.index].availability_zone
+  vpc_security_group_ids = [aws_security_group.web.id]
+  subnet_id              = aws_subnet.public[count.index].id
   tags = {
-    Name = "web1"
+    name = var.public_subnet_info[count.index].name
   }
-  depends_on = [aws_key_pair.ntier, aws_subnet.subnets, aws_security_group.web]
+  depends_on = [aws_key_pair.ntier-key, aws_security_group.web, aws_subnet.public]
 }
 
 
-resource "null_resource" "web" {
+resource "null_resource" "web_instance" {
   triggers = {
     build_id = var.build_id
   }
+
+  count = length(var.public_subnet_info)
   connection {
-    host        = aws_instance.web.public_ip
+    host        = aws_instance.web_instance[count.index].public_ip
     user        = "ubuntu"
-    private_key = file("~/.ssh/id_rsa")
+    private_key = file("~/.ssh/id_ed25519")
   }
   provisioner "file" {
     source      = "index.html"
@@ -50,5 +47,5 @@ resource "null_resource" "web" {
   provisioner "remote-exec" {
     script = "nginx.sh"
   }
-  depends_on = []
+  depends_on = [aws_instance.web_instance]
 }
