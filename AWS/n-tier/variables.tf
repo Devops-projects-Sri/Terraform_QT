@@ -21,12 +21,6 @@ variable "vpc_info" {
     enable_dns_hostnames = bool
     enable_dns_support   = bool
   })
-  default = {
-    cidr_block           = "10.113.0.0/16"
-    name                 = "ntier"
-    enable_dns_hostnames = true
-    enable_dns_support   = true
-  }
 }
 
 
@@ -37,51 +31,77 @@ variable "public_subnet_info" {
     cidr_block        = string
     availability_zone = string
   }))
-  default = [{
-    name              = "web1"
-    cidr_block        = "10.113.1.0/24"
-    availability_zone = "us-east-1a"
-    }, {
-    name              = "web2"
-    cidr_block        = "10.113.2.0/24"
-    availability_zone = "us-east-1b"
-  }]
 }
 
 # var info for private subnet
 variable "private_subnet_info" {
-
   type = list(object({
     name              = string
-    cidr              = string
+    cidr_block        = string
     availability_zone = string
   }))
-
-  default = [{
-    name              = "app1"
-    cidr              = "10.113.11.0/24"
-    availability_zone = "us-east-1a"
-    },
-    {
-      name              = "app2"
-      cidr              = "10.113.12.0/24"
-      availability_zone = "us-east-1b"
-    },
-    {
-      name              = "db1"
-      cidr              = "10.113.21.0/24"
-      availability_zone = "us-east-1a"
-    },
-    {
-      name              = "db2"
-      cidr              = "10.113.22.0/24"
-      availability_zone = "us-east-1b"
-  }]
 }
 
 # var info for web security group
 # one cidr block per rule for ingress and egress rules
+# from_port and to_port denotes the range of ports you want opened in aws
+# from_port does not denote the client port which is random and ephemeral
+
 variable "web_sg" {
+  type = object({
+    name        = string
+    description = string
+    ingress_rules = list(object({
+      name        = string
+      cidr_ipv4   = string
+      description = string
+      from_port   = number
+      to_port     = number
+      ip_protocol = string
+    }))
+
+    egress_rules = list(object({
+      name        = string
+      cidr_ipv4   = string
+      description = string
+      from_port   = number
+      to_port     = number
+      ip_protocol = string
+    }))
+  })
+}
+
+# var info for app security group
+# one cidr block per rule for ingress and egress rules
+
+variable "app_sg" {
+  type = object({
+    name        = string
+    description = string
+    ingress_rules = list(object({
+      name        = string
+      cidr_ipv4   = string
+      description = string
+      from_port   = number
+      to_port     = number
+      ip_protocol = string
+    }))
+
+    egress_rules = list(object({
+      name        = string
+      cidr_ipv4   = string
+      description = string
+      from_port   = number
+      to_port     = number
+      ip_protocol = string
+    }))
+  })
+}
+
+# var info for db security group
+# one cidr block per rule for ingress and egress rules
+
+variable "db_sg" {
   type = object({
     name        = string
     description = string

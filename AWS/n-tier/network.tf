@@ -13,7 +13,6 @@ resource "aws_vpc" "vpc" {
 # subnet info
 
 # public 
-
 resource "aws_subnet" "public" {
   count             = length(var.public_subnet_info)
   vpc_id            = aws_vpc.vpc.id
@@ -59,10 +58,12 @@ resource "aws_route" "internet" {
   route_table_id         = data.aws_route_table.mainrt.id # refer datasource
   destination_cidr_block = local.anywhere
   gateway_id             = aws_internet_gateway.igw.id
-  depends_on             = [aws_internet_gateway.igw, data.aws_route_table.rt]
+  depends_on             = [aws_internet_gateway.igw, data.aws_route_table.mainrt]
 }
 
-# fetch the default(main) route table id
+# fetch the default(main) route table id 
+# default rt gets created automatically. alternatively, create a rt and use that
+
 data "aws_route_table" "mainrt" {
   region = var.region
   vpc_id = aws_vpc.vpc.id
