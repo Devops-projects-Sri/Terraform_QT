@@ -6,7 +6,7 @@ resource "aws_security_group" "web" {
   vpc_id      = aws_vpc.vpc.id
   description = var.web_sg.description
   tags = {
-    name = var.web_sg.name
+    Name = var.web_sg.name
   }
   depends_on = [aws_vpc.vpc]
 }

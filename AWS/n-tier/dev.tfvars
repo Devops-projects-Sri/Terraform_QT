@@ -11,7 +11,8 @@ public_subnet_info = [
     name              = "web1"
     cidr_block        = "10.113.1.0/24"
     availability_zone = "us-east-1a"
-    }, {
+  },
+  {
     name              = "web2"
     cidr_block        = "10.113.2.0/24"
     availability_zone = "us-east-1b"
@@ -21,22 +22,22 @@ public_subnet_info = [
 private_subnet_info = [
   {
     name              = "app1"
-    cidr              = "10.113.11.0/24"
+    cidr_block        = "10.113.11.0/24"
     availability_zone = "us-east-1a"
   },
   {
     name              = "app2"
-    cidr              = "10.113.12.0/24"
+    cidr_block        = "10.113.12.0/24"
     availability_zone = "us-east-1b"
   },
   {
     name              = "db1"
-    cidr              = "10.113.21.0/24"
+    cidr_block        = "10.113.21.0/24"
     availability_zone = "us-east-1a"
   },
   {
     name              = "db2"
-    cidr              = "10.113.22.0/24"
+    cidr_block        = "10.113.22.0/24"
     availability_zone = "us-east-1b"
   }
 ]
@@ -51,7 +52,7 @@ web_sg = {
   name        = "web_security_group"
   ingress_rules = [{
     name        = "http"
-    cidr_block  = "0.0.0.0/0"
+    cidr_ipv4   = "0.0.0.0/0"
     from_port   = 80
     to_port     = 80
     ip_protocol = "tcp"
@@ -59,7 +60,7 @@ web_sg = {
     },
     {
       name        = "https"
-      cidr_block  = "0.0.0.0/0"
+      cidr_ipv4   = "0.0.0.0/0"
       from_port   = 443
       to_port     = 443
       ip_protocol = "tcp"
@@ -67,7 +68,7 @@ web_sg = {
     },
     {
       name        = "ssh"
-      cidr_block  = "0.0.0.0/0"
+      cidr_ipv4   = "0.0.0.0/0"
       from_port   = 22
       to_port     = 22
       ip_protocol = "tcp"
@@ -75,7 +76,7 @@ web_sg = {
   }]
   egress_rules = [{
     name        = "allow all"
-    cidr_block  = "0.0.0.0/0"
+    cidr_ipv4   = "0.0.0.0/0"
     from_port   = 0
     to_port     = 0
     ip_protocol = "-1"
@@ -88,7 +89,7 @@ app_sg = {
   name        = "app_security_group"
   ingress_rules = [{
     name        = "open 8080 port"
-    cidr_block  = "0.0.0.0/0"
+    cidr_ipv4   = "0.0.0.0/0"
     from_port   = 8080
     to_port     = 8080
     ip_protocol = "tcp"
@@ -96,7 +97,7 @@ app_sg = {
     },
     {
       name        = "ssh"
-      cidr_block  = "0.0.0.0/0"
+      cidr_ipv4   = "0.0.0.0/0"
       from_port   = 22
       to_port     = 22
       ip_protocol = "tcp"
@@ -104,7 +105,7 @@ app_sg = {
   }]
   egress_rules = [{
     name        = "allow all"
-    cidr_block  = "0.0.0.0/0"
+    cidr_ipv4   = "0.0.0.0/0"
     from_port   = 0
     to_port     = 0
     ip_protocol = "-1"
@@ -118,7 +119,7 @@ db_sg = {
   name        = "db_security_group"
   ingress_rules = [{
     name        = "open 8080 port"
-    cidr_block  = "0.0.0.0/0"
+    cidr_ipv4   = "0.0.0.0/0"
     from_port   = 3306
     to_port     = 3306
     ip_protocol = "tcp"
@@ -126,7 +127,7 @@ db_sg = {
     },
     {
       name        = "ssh"
-      cidr_block  = "0.0.0.0/0"
+      cidr_ipv4   = "0.0.0.0/0"
       from_port   = 22
       to_port     = 22
       ip_protocol = "tcp"
@@ -134,7 +135,7 @@ db_sg = {
   }]
   egress_rules = [{
     name        = "allow all"
-    cidr_block  = "0.0.0.0/0"
+    cidr_ipv4   = "0.0.0.0/0"
     from_port   = 0
     to_port     = 0
     ip_protocol = "-1"

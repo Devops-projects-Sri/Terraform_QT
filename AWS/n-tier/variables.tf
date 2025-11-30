@@ -21,6 +21,12 @@ variable "vpc_info" {
     enable_dns_hostnames = bool
     enable_dns_support   = bool
   })
+  default = {
+    cidr_block           = "10.113.0.0/16"
+    name                 = "ntier"
+    enable_dns_hostnames = true
+    enable_dns_support   = true
+  }
 }
 
 

@@ -6,7 +6,7 @@ resource "aws_security_group" "db" {
   vpc_id      = aws_vpc.vpc.id
   description = var.db_sg.description
   tags = {
-    name = var.db_sg.name
+    Name = var.db_sg.name
   }
   depends_on = [aws_vpc.vpc]
 }

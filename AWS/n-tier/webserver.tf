@@ -12,7 +12,7 @@ resource "aws_key_pair" "ntier-key" {
 
 resource "aws_instance" "web_instance" {
 
-  ami                         = "ami-02521d90e7410d9f0"
+  ami                         = "ami-0ecb62995f68bb549"
   instance_type               = "t2.micro"
   associate_public_ip_address = true
   region                      = var.region
@@ -23,7 +23,7 @@ resource "aws_instance" "web_instance" {
   vpc_security_group_ids = [aws_security_group.web.id]
   subnet_id              = aws_subnet.public[count.index].id
   tags = {
-    name = var.public_subnet_info[count.index].name
+    Name = var.public_subnet_info[count.index].name
   }
   depends_on = [aws_key_pair.ntier-key, aws_security_group.web, aws_subnet.public]
 }

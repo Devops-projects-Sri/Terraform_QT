@@ -5,7 +5,9 @@ resource "aws_vpc" "vpc" {
   region               = var.region
   enable_dns_support   = var.vpc_info.enable_dns_support   #Allows DNS resolution inside the VPC. enabled by default
   enable_dns_hostnames = var.vpc_info.enable_dns_hostnames #enables public hostnames for ec2 in vpc with public IPs
-  tags                 = var.default_tags
+  tags = {
+    Name = var.vpc_info.name
+  }
 }
 
 
@@ -20,7 +22,7 @@ resource "aws_subnet" "public" {
   availability_zone = var.public_subnet_info[count.index].availability_zone
   cidr_block        = var.public_subnet_info[count.index].cidr_block
   tags = {
-    name = var.public_subnet_info[count.index].name
+    Name = var.public_subnet_info[count.index].name
   }
   depends_on = [aws_vpc.vpc]
 }
@@ -33,7 +35,7 @@ resource "aws_subnet" "private" {
   availability_zone = var.private_subnet_info[count.index].availability_zone
   cidr_block        = var.private_subnet_info[count.index].cidr_block
   tags = {
-    name = var.private_subnet_info[count.index].name
+    Name = var.private_subnet_info[count.index].name
   }
   depends_on = [aws_vpc.vpc]
 }
@@ -47,7 +49,7 @@ resource "aws_internet_gateway" "igw" {
   region = var.region
   vpc_id = aws_vpc.vpc.id
   tags = {
-    name = format("%s-igw-web", var.vpc_info.name)
+    Name = format("%s-igw-web", var.vpc_info.name)
   }
   depends_on = [aws_vpc.vpc]
 }
