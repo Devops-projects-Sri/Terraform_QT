@@ -1,11 +1,11 @@
 
 # vpc info
 resource "aws_vpc" "vpc" {
-  cidr_block = var.vpc_info.cidr_block
-  region = var.region
-  enable_dns_support = var.vpc_info.enable_dns_support #Allows DNS resolution inside the VPC. enabled by default
+  cidr_block           = var.vpc_info.cidr_block
+  region               = var.region
+  enable_dns_support   = var.vpc_info.enable_dns_support   #Allows DNS resolution inside the VPC. enabled by default
   enable_dns_hostnames = var.vpc_info.enable_dns_hostnames #enables public hostnames for ec2 in vpc with public IPs
-  tags = var.default_tags
+  tags                 = var.default_tags
 }
 
 
@@ -15,28 +15,28 @@ resource "aws_vpc" "vpc" {
 # public 
 
 resource "aws_subnet" "public" {
-  count = length(var.public_subnet_info)
-  vpc_id = aws_vpc.vpc.id
-  region = var.region
+  count             = length(var.public_subnet_info)
+  vpc_id            = aws_vpc.vpc.id
+  region            = var.region
   availability_zone = var.public_subnet_info[count.index].availability_zone
-  cidr_block = var.public_subnet_info[count.index].cidr_block
+  cidr_block        = var.public_subnet_info[count.index].cidr_block
   tags = {
     name = var.public_subnet_info[count.index].name
   }
-  depends_on = [ aws_vpc.vpc ]
+  depends_on = [aws_vpc.vpc]
 }
 
 # private
 resource "aws_subnet" "private" {
-  count = length(var.private_subnet_info)
-  vpc_id = aws_vpc.vpc.id
-  region = var.region
+  count             = length(var.private_subnet_info)
+  vpc_id            = aws_vpc.vpc.id
+  region            = var.region
   availability_zone = var.private_subnet_info[count.index].availability_zone
-  cidr_block = var.private_subnet_info[count.index].cidr_block
+  cidr_block        = var.private_subnet_info[count.index].cidr_block
   tags = {
     name = var.private_subnet_info[count.index].name
   }
-  depends_on = [ aws_vpc.vpc ]
+  depends_on = [aws_vpc.vpc]
 }
 
 #######################################
@@ -45,32 +45,32 @@ resource "aws_subnet" "private" {
 
 # internet gateway for public subnet
 resource "aws_internet_gateway" "igw" {
-    region = var.region
-    vpc_id = aws_vpc.vpc.id
-    tags = {
-        name = format("%s-igw-web", var.vpc_info.name)
-    }
-    depends_on = [ aws_vpc.vpc ] 
+  region = var.region
+  vpc_id = aws_vpc.vpc.id
+  tags = {
+    name = format("%s-igw-web", var.vpc_info.name)
+  }
+  depends_on = [aws_vpc.vpc]
 }
 
 # route to public internet
 resource "aws_route" "internet" {
-  region = var.region
-  route_table_id = data.aws_route_table.rt.id # refer datasource
+  region                 = var.region
+  route_table_id         = data.aws_route_table.mainrt.id # refer datasource
   destination_cidr_block = local.anywhere
-  gateway_id = aws_internet_gateway.igw.id
-  depends_on = [ aws_internet_gateway.igw, data.aws_route_table.rt ]
+  gateway_id             = aws_internet_gateway.igw.id
+  depends_on             = [aws_internet_gateway.igw, data.aws_route_table.rt]
 }
 
 # fetch the default(main) route table id
-data "aws_route_table" "rt" {
+data "aws_route_table" "mainrt" {
   region = var.region
   vpc_id = aws_vpc.vpc.id
   filter {
-    name = "association.main" # indicates whether the rt is the main rt
-    values = ["true"] # true - main rt
+    name   = "association.main" # indicates whether the rt is the main rt
+    values = ["true"]           # true - main rt
   }
-  depends_on = [ aws_vpc.vpc ]
+  depends_on = [aws_vpc.vpc]
 }
 
 #############################
