@@ -5,6 +5,11 @@ terraform {
       version = "6.23.0"
     }
   }
+  backend "s3" {
+    bucket = "amzn-tf-qt-state"
+    key = "n-tier/dev"
+    region = "us-east-1"
+  }
   required_version = ">= 1.11.0"
 }
 
