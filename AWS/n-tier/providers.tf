@@ -7,8 +7,9 @@ terraform {
   }
   backend "s3" {
     bucket = "amzn-tf-qt-state"
-    key = "n-tier/dev"
+    key    = "n-tier/dev"
     region = "us-east-1"
+    use_lockfile = true
   }
   required_version = ">= 1.11.0"
 }
