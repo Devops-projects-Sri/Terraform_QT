@@ -82,10 +82,10 @@
 
 module "network" {
 
-  #use git if local source is broken
+  #use git module repo to use v1.0.0
   #source = "git::https://github.com/Devops-projects-Sri/Terraform_QT_modules.git//AWS/modules/network?ref=v1.0.0"
 
-  
+
   source              = "./modules/network"
   region              = var.region
   vpc_info            = var.vpc_info
