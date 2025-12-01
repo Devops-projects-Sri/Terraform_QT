@@ -1,4 +1,5 @@
 region = "us-east-1"
+
 vpc_info = {
   cidr_block           = "10.113.0.0/16"
   name                 = "ntier"
