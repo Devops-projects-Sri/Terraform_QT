@@ -21,11 +21,11 @@ resource "aws_instance" "web_instance" {
   count                  = length(var.public_subnet_info)
   availability_zone      = var.public_subnet_info[count.index].availability_zone
   vpc_security_group_ids = [module.web_security_group.security_group_id] #input from module secuitygroup/outputs.tf
-  subnet_id              = aws_subnet.public[count.index].id
+  subnet_id              = module.network.public_subnet_ids[count.index]
   tags = {
     Name = var.public_subnet_info[count.index].name
   }
-  depends_on = [aws_key_pair.ntier-key, module.web_security_group, aws_subnet.public]
+  depends_on = [aws_key_pair.ntier-key, module.web_security_group, module.network]
 }
 
 
