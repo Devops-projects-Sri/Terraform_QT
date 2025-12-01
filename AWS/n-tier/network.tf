@@ -79,3 +79,11 @@
 # #############################
 
 # # configuring nat gateway for private subnet
+
+module "network" {
+  source = "./modules/network"
+  region = var.region
+  vpc_info = var.vpc_info
+  public_subnet_info = var.public_subnet_info
+  private_subnet_info = var.private_subnet_info  
+}

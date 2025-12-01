@@ -1,7 +1,7 @@
 # var info for defaults
 
 variable "region" {
-  type    = string
+  type = string
 }
 
 
