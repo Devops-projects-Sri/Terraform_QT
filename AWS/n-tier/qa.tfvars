@@ -2,7 +2,7 @@ region = "us-west-2"
 
 vpc_info = {
   cidr_block           = "10.113.0.0/16"
-  name                 = "ntier"
+  name                 = "ntier-qa"
   enable_dns_hostnames = true
   enable_dns_support   = true
 }
