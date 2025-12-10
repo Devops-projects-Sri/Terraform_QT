@@ -5,6 +5,7 @@ data "aws_vpc" "default" {
   cidr_block = var.default_cidr
 }
 
+# Using vpc id to filter subnet
 data "aws_subnets" "default" {
   region = var.region
   filter {
