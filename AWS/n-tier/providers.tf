@@ -6,10 +6,10 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "amzn-tf-qt-state"
+    bucket = "amzn-tf-qt-state" #s3 needs to be already present
     key    = "n-tier/dev"
     region = "us-east-1"
-    use_lockfile = true
+    use_lockfile = true #state locking
   }
   required_version = ">= 1.11.0"
 }
